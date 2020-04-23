@@ -2,8 +2,8 @@
 #define SKIN_RENDERER_HPP
 
 #include <SFML/Graphics.hpp>
-#include "math_vector.hpp"
-#include "Join.hpp"
+#include "../maths/math_vector.hpp"
+#include "../rigging/Join.hpp"
 
 class Skin
     : public sf::Drawable

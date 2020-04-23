@@ -1,7 +1,7 @@
 #ifndef JOIN_RENDERER_H
 #define JOIN_RENDERER_H
 
-#include "Join.hpp"
+#include "../rigging/Join.hpp"
 
 struct JoinRenderer
     : public sf::Drawable

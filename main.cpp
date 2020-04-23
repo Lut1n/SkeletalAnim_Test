@@ -3,11 +3,11 @@
 
 #include <cmath>
 
-#include "math_vector.hpp"
-#include "JoinRenderer.hpp"
-#include "Animator.hpp"
-#include "SkinRenderer.hpp"
-#include "WindRenderer.hpp"
+#include "maths/math_vector.hpp"
+#include "rendering/JoinRenderer.hpp"
+#include "rigging/Animator.hpp"
+#include "rendering/SkinRenderer.hpp"
+#include "rendering/WindRenderer.hpp"
 
 struct AnimatedTree
 {

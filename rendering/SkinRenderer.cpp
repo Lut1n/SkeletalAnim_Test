@@ -14,7 +14,7 @@ Skin::Skin()
 {
     if(s_assetsLoaded == false)
     {
-        s_texture.loadFromFile("./tree.png");
+        s_texture.loadFromFile("./data/tree.png");
         s_texture.setSmooth(true);
         s_shader.loadFromMemory(vertCode, sf::Shader::Vertex);
         s_assetsLoaded = true;

@@ -4,25 +4,25 @@ project(SkeletalAnim_Test)
 
 set(SRCS
     main.cpp
-    JoinRenderer.cpp
-    SkinRenderer.cpp
-    WindRenderer.cpp
-    Animator.cpp
-    Join.cpp
-    Graph.cpp
-    math_vector.cpp
+    rendering/JoinRenderer.cpp
+    rendering/SkinRenderer.cpp
+    rendering/WindRenderer.cpp
+    rigging/Animator.cpp
+    rigging/Join.cpp
+    rigging/Graph.cpp
+    maths/math_vector.cpp
     )
 
 set(HEADERS
-    JoinRenderer.hpp
-    SkinRenderer.hpp
-    WindRenderer.hpp
-    Animator.hpp
-    Join.hpp
-    Graph.hpp
-    math_vector.hpp
-    WindFx_Glsl.hpp
-    vertex_shader.hpp
+    rendering/JoinRenderer.hpp
+    rendering/SkinRenderer.hpp
+    rendering/WindRenderer.hpp
+    rigging/Animator.hpp
+    rigging/Join.hpp
+    rigging/Graph.hpp
+    maths/math_vector.hpp
+    rendering/WindFx_Glsl.hpp
+    rendering/vertex_shader.hpp
     )
 
 add_definitions("-Wall -Werror -g")
@@ -34,6 +34,7 @@ add_executable(SkeletalTest ${SRCS} ${HEADERS})
 
 ## In most cases better set in the CMake cache
 # set(SFML_DIR "<sfml root prefix>/lib/cmake/SFML")
+set(SFML_DIR "C:/SFML-2.5.1/lib/cmake/SFML")
 
 find_package(SFML 2.4 COMPONENTS graphics REQUIRED)
 

@@ -1,5 +1,5 @@
 #include "JoinRenderer.hpp"
-#include "math_vector.hpp"
+#include "../maths/math_vector.hpp"
 #include <cmath>
 
 JoinRenderer::JoinRenderer()

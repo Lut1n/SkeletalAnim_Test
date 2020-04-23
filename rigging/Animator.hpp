@@ -1,7 +1,7 @@
 #ifndef ANIMATOR_H
 #define ANIMATOR_H
 
-#include "math_vector.hpp"
+#include "../maths/math_vector.hpp"
 #include "Join.hpp"
 
 #define BONE_COUNT 5

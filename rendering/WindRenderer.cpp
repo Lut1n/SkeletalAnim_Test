@@ -1,5 +1,5 @@
 #include "WindRenderer.hpp"
-#include "math_vector.hpp"
+#include "../maths/math_vector.hpp"
 #include "WindFx_Glsl.hpp"
 
 WindRenderer::WindRenderer()
@@ -16,7 +16,7 @@ WindRenderer::WindRenderer()
     m_rectShape = quad;
     
     m_shader.loadFromMemory(windFx_Glsl, sf::Shader::Fragment);
-    m_background.loadFromFile("./background.png");
+    m_background.loadFromFile("./data/background.png");
 }
 
 WindRenderer::~WindRenderer()
