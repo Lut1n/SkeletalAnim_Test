@@ -1,8 +1,8 @@
-#include "WindRenderer.hpp"
+#include "WindFx.hpp"
 #include "../maths/math_vector.hpp"
 #include "WindFx_Glsl.hpp"
 
-WindRenderer::WindRenderer()
+WindFx::WindFx()
 {
     sf::VertexArray quad(sf::Quads, 4);
     quad[0].position = Vec2(0.f,0.f);
@@ -19,16 +19,16 @@ WindRenderer::WindRenderer()
     m_background.loadFromFile("./data/background.png");
 }
 
-WindRenderer::~WindRenderer()
+WindFx::~WindFx()
 {
 }
 
-void WindRenderer::update(float ellapsed_s)
+void WindFx::update(float ellapsed_s)
 {
     m_shader.setUniform("u_ellapsed_s",ellapsed_s);
 }
 
-void WindRenderer::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void WindFx::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.shader = &m_shader;
     states.texture = &m_background;

@@ -1,5 +1,5 @@
-#ifndef WINDFX_GLSL_HPP
-#define WINDFX_GLSL_HPP
+#ifndef WIND_FX_GLSL_HPP
+#define WIND_FX_GLSL_HPP
 
 #define GLSL_CODE(code) #code
 
@@ -72,4 +72,4 @@ void main()
 
 );
 
-#endif // WINDFX_GLSL_HPP
+#endif // WIND_FX_GLSL_HPP

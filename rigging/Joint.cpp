@@ -1,26 +1,26 @@
-#include "Join.hpp"
+#include "Joint.hpp"
 
-Join::Join(sf::Transform initTransform, sf::Transform transform)
+Joint::Joint(sf::Transform initTransform, sf::Transform transform)
     : m_localInitTransform(initTransform)
     , m_localTransform(transform)
 {
 }
 
-Join::~Join()
+Joint::~Joint()
 {
 }
 
-void Join::updateTransform()
+void Joint::updateTransform()
 {
     sf::Transform initialTransform = sf::Transform::Identity;
     m_transform = sf::Transform::Identity;
     
-    Join* curr = this;
+    Joint* curr = this;
     while(curr)
     {
         m_transform = curr->m_localTransform * m_transform;
         initialTransform = curr->m_localInitTransform * initialTransform;
-        curr = dynamic_cast<Join*>(curr->m_parent);
+        curr = dynamic_cast<Joint*>(curr->m_parent);
     }
     
     m_initTransform = initialTransform;

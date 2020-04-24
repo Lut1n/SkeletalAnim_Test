@@ -1,10 +1,10 @@
-#ifndef JOIN_HPP
-#define JOIN_HPP
+#ifndef JOINT_HPP
+#define JOINT_HPP
 
 #include "Graph.hpp"
 #include <SFML/Graphics.hpp>
 
-struct Join : public GraphNode
+struct Joint : public GraphNode
 {
     // local transforms
     sf::Transform m_localInitTransform;
@@ -15,10 +15,10 @@ struct Join : public GraphNode
     sf::Transform m_inverseInitTransform;
     sf::Transform m_transform;
 
-    Join(sf::Transform initTransform, sf::Transform transform);
-    virtual ~Join();
+    Joint(sf::Transform initTransform, sf::Transform transform);
+    virtual ~Joint();
 
     void updateTransform();
 };
 
-#endif // JOIN_HPP
+#endif // JOINT_HPP

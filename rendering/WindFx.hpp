@@ -1,16 +1,16 @@
-#ifndef WIND_RENDERER_HPP
-#define WIND_RENDERER_HPP
+#ifndef WIND_FX_HPP
+#define WIND_FX_HPP
 
 #include <SFML/Graphics.hpp>
 
-class WindRenderer
+class WindFx
     : public sf::Drawable
     , public sf::Transformable
 {
     public:
 
-    WindRenderer();
-    virtual ~WindRenderer();
+    WindFx();
+    virtual ~WindFx();
     
     void update(float ellapsed_s);
 

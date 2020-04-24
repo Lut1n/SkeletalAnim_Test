@@ -6,21 +6,21 @@
 std::string vertCode = GLSL_CODE(
 
 const int MAX_BONES = 50;
-uniform mat4 u_joinTransforms[MAX_BONES];
-uniform float u_joinCount;
+uniform mat4 u_jointTransforms[MAX_BONES];
+uniform float u_jointCount;
 
 void main()
 {
     int indexes[3];
-    indexes[0] = int(gl_Color[0]*u_joinCount);
-    indexes[1] = int(gl_Color[1]*u_joinCount);
-    indexes[2] = int(gl_Color[2]*u_joinCount);
+    indexes[0] = int(gl_Color[0]*u_jointCount);
+    indexes[1] = int(gl_Color[1]*u_jointCount);
+    indexes[2] = int(gl_Color[2]*u_jointCount);
 
     vec4 output_vertex = vec4(0.0,0.0,0.0,1.0);
     float weight = 0.7;
     for(int i=0;i<2;++i)
     {
-        output_vertex.xyz += (u_joinTransforms[indexes[i]] * gl_Vertex).xyz * weight;
+        output_vertex.xyz += (u_jointTransforms[indexes[i]] * gl_Vertex).xyz * weight;
         weight = 0.3;
     }
 

@@ -1,4 +1,4 @@
-#include "SkinRenderer.hpp"
+#include "SkinDrawable.hpp"
 #include "vertex_shader.hpp"
 #include <cmath>
 #include <iostream>
@@ -6,11 +6,11 @@
 #define VERTEX_COUNT 10
 #define SKIN_LEN 300
 
-sf::Shader Skin::s_shader;
-sf::Texture Skin::s_texture;
-bool Skin::s_assetsLoaded = false;
+sf::Shader SkinDrawable::s_shader;
+sf::Texture SkinDrawable::s_texture;
+bool SkinDrawable::s_assetsLoaded = false;
 
-Skin::Skin()
+SkinDrawable::SkinDrawable()
 {
     if(s_assetsLoaded == false)
     {
@@ -36,16 +36,16 @@ Skin::Skin()
 
 }
 
-void Skin::setJoins(std::vector<Join*> joins)
+void SkinDrawable::setJoints(std::vector<Joint*> joints)
 {
-    m_joins = joins;
-    int boneCount = m_joins.size();
+    m_joints = joints;
+    int boneCount = m_joints.size();
 
     for(int i=0;i<VERTEX_COUNT;++i)
     {
         int c1,c2,c3;
         // float w1,w2;
-        findClosestJoins(m_vertices[i].position,c1,c2,c3);
+        findClosestJoints(m_vertices[i].position,c1,c2,c3);
         m_vertices[i].color = sf::Color(float(c1)*255.0/boneCount,
                                         float(c2)*255.0/boneCount,
                                         float(c3)*255.0/boneCount,255.0);
@@ -53,18 +53,18 @@ void Skin::setJoins(std::vector<Join*> joins)
     
     m_matrices.resize(50, sf::Transform::Identity);
     for(int i=0;i<boneCount;++i) {
-        m_matrices[i] = m_joins[i]->m_transform * m_joins[i]->m_inverseInitTransform;
+        m_matrices[i] = m_joints[i]->m_transform * m_joints[i]->m_inverseInitTransform;
     }
-    s_shader.setUniformArray("u_joinTransforms", m_matrices.data(), m_matrices.size());
-    s_shader.setUniform("u_joinCount",float(boneCount));
+    s_shader.setUniformArray("u_jointTransforms", m_matrices.data(), m_matrices.size());
+    s_shader.setUniform("u_jointCount",float(boneCount));
 }
 
-void Skin::findClosestJoins(Vec2 vertex, int& i1, int& i2, int& i3)
+void SkinDrawable::findClosestJoints(Vec2 vertex, int& i1, int& i2, int& i3)
 {
     std::map<float,int> ordered;
-    for(int i=0;i<(int)m_joins.size();++i)
+    for(int i=0;i<(int)m_joints.size();++i)
     {
-        Vec2 rel = m_joins[i]->m_initTransform * Vec2(0.0,0.0);
+        Vec2 rel = m_joints[i]->m_initTransform * Vec2(0.0,0.0);
         float l = len(rel - vertex);
         ordered[l] = i;
     }
@@ -75,7 +75,7 @@ void Skin::findClosestJoins(Vec2 vertex, int& i1, int& i2, int& i3)
     i3 = it->second;
 }
 
-void Skin::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void SkinDrawable::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform = getTransform();
     states.shader = &s_shader;

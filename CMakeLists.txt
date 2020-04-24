@@ -4,21 +4,21 @@ project(SkeletalAnim_Test)
 
 set(SRCS
     main.cpp
-    rendering/JoinRenderer.cpp
-    rendering/SkinRenderer.cpp
-    rendering/WindRenderer.cpp
+    rendering/JointDrawable.cpp
+    rendering/SkinDrawable.cpp
+    rendering/WindFx.cpp
     rigging/Animator.cpp
-    rigging/Join.cpp
+    rigging/Joint.cpp
     rigging/Graph.cpp
     maths/math_vector.cpp
     )
 
 set(HEADERS
-    rendering/JoinRenderer.hpp
-    rendering/SkinRenderer.hpp
-    rendering/WindRenderer.hpp
+    rendering/JointDrawable.hpp
+    rendering/SkinDrawable.hpp
+    rendering/WindFx.hpp
     rigging/Animator.hpp
-    rigging/Join.hpp
+    rigging/Joint.hpp
     rigging/Graph.hpp
     maths/math_vector.hpp
     rendering/WindFx_Glsl.hpp
@@ -39,5 +39,5 @@ set(SFML_DIR "C:/SFML-2.5.1/lib/cmake/SFML")
 find_package(SFML 2.4 COMPONENTS graphics REQUIRED)
 
 target_link_libraries(SkeletalTest sfml-graphics)
-target_link_libraries(SkeletalTest sfml-window)
-target_link_libraries(SkeletalTest sfml-system)
+# target_link_libraries(SkeletalTest sfml-window)
+# target_link_libraries(SkeletalTest sfml-system)

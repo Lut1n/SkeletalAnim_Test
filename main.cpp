@@ -4,26 +4,26 @@
 #include <cmath>
 
 #include "maths/math_vector.hpp"
-#include "rendering/JoinRenderer.hpp"
+#include "rendering/JointDrawable.hpp"
 #include "rigging/Animator.hpp"
-#include "rendering/SkinRenderer.hpp"
-#include "rendering/WindRenderer.hpp"
+#include "rendering/SkinDrawable.hpp"
+#include "rendering/WindFx.hpp"
 
 struct AnimatedTree
 {
     static int s_mode;
 
     Animator m_animator;
-    Skin m_skin;
-    JoinRenderer m_joinRenderer;
+    SkinDrawable m_skin;
+    JointDrawable m_joint;
     Vec2 m_position;
 
-    AnimatedTree(const Vec2& position, int joinCount = BONE_COUNT, float joinLength = BONE_LENGTH)
+    AnimatedTree(const Vec2& position, int jointCount = BONE_COUNT, float jointLength = BONE_LENGTH)
     {
         m_position = position;
-        m_animator = Animator(joinCount,joinLength);
+        m_animator = Animator(jointCount,jointLength);
         m_skin.setPosition( position );
-        m_joinRenderer.setPosition( position );
+        m_joint.setPosition( position );
 
     }
 
@@ -34,12 +34,12 @@ struct AnimatedTree
 
     void draw(sf::RenderTarget& renderTarget)
     {
-        m_skin.setJoins(m_animator.m_joins);
-        m_joinRenderer.setJoins(m_animator.m_joins);
+        m_skin.setJoints(m_animator.m_joints);
+        m_joint.setJoints(m_animator.m_joints);
         if(s_mode == 0 || s_mode == 1)
             renderTarget.draw(m_skin);
         if(s_mode == 0 || s_mode == 2)
-            renderTarget.draw(m_joinRenderer);
+            renderTarget.draw(m_joint);
     }
 };
 
@@ -47,10 +47,13 @@ int AnimatedTree::s_mode = 0;
 
 int main(int argc, char* argv[])
 {
+    using ArgLs = std::vector<std::string>; ArgLs args;
+    if(argc>1) args = ArgLs(argv+1, argv+argc);
+
     // create the window
     sf::RenderWindow window(sf::VideoMode(640, 360), "Skeletal-Test", sf::Style::Titlebar | sf::Style::Close);
 
-    WindRenderer wind;
+    WindFx wind;
 
     std::vector<AnimatedTree> trees;
     trees.push_back( AnimatedTree(Vec2(160.f,360.f)) );

@@ -3,17 +3,17 @@
 
 #include <SFML/Graphics.hpp>
 #include "../maths/math_vector.hpp"
-#include "../rigging/Join.hpp"
+#include "../rigging/Joint.hpp"
 
-class Skin
+class SkinDrawable
     : public sf::Drawable
     , public sf::Transformable
 {
     public:
 
-    Skin();
+    SkinDrawable();
     
-    void setJoins(std::vector<Join*> joins);
+    void setJoints(std::vector<Joint*> joints);
 
     static sf::Shader s_shader;
     static sf::Texture s_texture;
@@ -21,12 +21,12 @@ class Skin
 
     private:
     
-    void findClosestJoins(Vec2 vertex, int& i1, int& i2, int& i3);
+    void findClosestJoints(Vec2 vertex, int& i1, int& i2, int& i3);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     sf::VertexArray m_vertices;
-    std::vector<Join*> m_joins;
+    std::vector<Joint*> m_joints;
     std::vector<sf::Glsl::Mat4> m_matrices;
 };
 
