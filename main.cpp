@@ -1,21 +1,33 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <cmath>
-
 #include "maths/math_vector.hpp"
 #include "rendering/JointDrawable.hpp"
 #include "rigging/Animator.hpp"
 #include "rendering/SkinDrawable.hpp"
 #include "rendering/WindFx.hpp"
 
+// --------------------------------------------------------------------------
 struct AnimatedTree
 {
-    static int s_mode;
+    enum DisplayMode
+    {
+        Display_None = 0,
+        Display_Skin,
+        Display_Joint,
+        Display_Weight,
+        Display_Skin_Joint,
+        Display_Weight_Joint,
+        Display_All,
 
-    Animator m_animator;
-    SkinDrawable m_skin;
-    JointDrawable m_joint;
+        Display_ModeCount,
+    };
+
+    static DisplayMode s_displayMode;
+
+    Animator m_animator;    // joint animator
+    SkinDrawable m_skin;    // main drawable
+    JointDrawable m_joint;  // joint drawable for visual debug
     Vec2 m_position;
 
     AnimatedTree(const Vec2& position, int jointCount = BONE_COUNT, float jointLength = BONE_LENGTH)
@@ -23,40 +35,44 @@ struct AnimatedTree
         m_position = position;
         m_animator = Animator(jointCount,jointLength);
         m_skin.setPosition( position );
-        m_joint.setPosition( position );
+        m_skin.setJoints(m_animator.joints());
 
+        m_joint.setPosition( position );
+        m_joint.setJoints(m_animator.joints());
     }
 
     void update(float ellapsed_time)
     {
-        m_animator.animate(Vec2(m_position.x/640.0,0.f), ellapsed_time);
+        float time_oft = m_position.x/640.0 * 0.5;
+        m_animator.animate(ellapsed_time - time_oft);
     }
 
     void draw(sf::RenderTarget& renderTarget)
     {
-        m_skin.setJoints(m_animator.m_joints);
-        m_joint.setJoints(m_animator.m_joints);
-        if(s_mode == 0 || s_mode == 1)
+        m_skin.setShaderParameters();
+
+        if(s_displayMode == Display_Skin || s_displayMode == Display_Skin_Joint)
             renderTarget.draw(m_skin);
-        if(s_mode == 0 || s_mode == 2)
+        if(s_displayMode == Display_Joint || s_displayMode == Display_Skin_Joint)
             renderTarget.draw(m_joint);
     }
 };
 
-int AnimatedTree::s_mode = 0;
+AnimatedTree::DisplayMode AnimatedTree::s_displayMode = AnimatedTree::Display_Skin;
 
 int main(int argc, char* argv[])
 {
+    // put arguments in std vector
     using ArgLs = std::vector<std::string>; ArgLs args;
     if(argc>1) args = ArgLs(argv+1, argv+argc);
 
     // create the window
     sf::RenderWindow window(sf::VideoMode(640, 360), "Skeletal-Test", sf::Style::Titlebar | sf::Style::Close);
 
-    WindFx wind;
-
+    // scene elements
+    WindFx windBackground;
     std::vector<AnimatedTree> trees;
-    trees.push_back( AnimatedTree(Vec2(160.f,360.f)) );
+    trees.push_back( AnimatedTree(Vec2(160.f,360.f), 2, 100.f) );
     trees.push_back( AnimatedTree(Vec2(320.f,360.f), 4, 70.f) );
     trees.push_back( AnimatedTree(Vec2(480.f,360.f),10,25.f) );
 
@@ -72,21 +88,23 @@ int main(int argc, char* argv[])
             if(event.type == sf::Event::Closed) window.close();
             if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
             {
-                if(++AnimatedTree::s_mode>=3)AnimatedTree::s_mode=0;
+                if(AnimatedTree::s_displayMode == AnimatedTree::Display_Skin)
+                    AnimatedTree::s_displayMode = AnimatedTree::Display_Joint;
+                else
+                    AnimatedTree::s_displayMode = AnimatedTree::Display_Skin;
             }
         }
 
         // update time
-        sf::Time elapsed = clock.getElapsedTime();
-        float ellapsed_s = elapsed.asMilliseconds() * 1e-3;
+        float elapsed = clock.getElapsedTime().asSeconds();
 
         // update animators
-        wind.update(ellapsed_s);
-        for(auto& t : trees) t.update(ellapsed_s);
+        windBackground.update(elapsed);
+        for(auto& t : trees) t.update(elapsed);
 
         // Draw
         window.clear();
-        window.draw(wind);
+        window.draw(windBackground);
         for(auto& t : trees) t.draw(window);
         window.display();
     }

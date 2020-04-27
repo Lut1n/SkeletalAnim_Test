@@ -3,6 +3,7 @@
 
 #define GLSL_CODE(code) #code
 
+// --------------------------------------------------------------------------
 std::string vertCode = GLSL_CODE(
 
 const int MAX_BONES = 50;
@@ -11,11 +12,13 @@ uniform float u_jointCount;
 
 void main()
 {
+    // extract transform indexes from input vertex color
     int indexes[3];
     indexes[0] = int(gl_Color[0]*u_jointCount);
     indexes[1] = int(gl_Color[1]*u_jointCount);
     indexes[2] = int(gl_Color[2]*u_jointCount);
 
+    // apply weighted transforms on vertex
     vec4 output_vertex = vec4(0.0,0.0,0.0,1.0);
     float weight = 0.7;
     for(int i=0;i<2;++i)

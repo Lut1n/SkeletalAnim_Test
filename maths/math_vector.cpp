@@ -20,6 +20,12 @@ float len( const Vec2& v )
 };
 
 // --------------------------------------------------------------------------
+float distance( const Vec2& p1, const Vec2& p2 )
+{
+    return len(p2-p1);
+}
+
+// --------------------------------------------------------------------------
 Vec2 normalize( const Vec2& v )
 {
     return v / len(v);

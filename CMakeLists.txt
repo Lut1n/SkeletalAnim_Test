@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(SkeletalAnim_Test)
+project(SkeletalAnim_Proj)
 
 set(SRCS
     main.cpp
@@ -27,7 +27,7 @@ set(HEADERS
 
 add_definitions("-Wall -Werror -g")
 
-add_executable(SkeletalTest ${SRCS} ${HEADERS})
+add_executable(SkeletalAnim ${SRCS} ${HEADERS})
 
 ## If you want to link SFML statically
 # set(SFML_STATIC_LIBRARIES TRUE)
@@ -38,6 +38,6 @@ set(SFML_DIR "C:/SFML-2.5.1/lib/cmake/SFML")
 
 find_package(SFML 2.4 COMPONENTS graphics REQUIRED)
 
-target_link_libraries(SkeletalTest sfml-graphics)
+target_link_libraries(SkeletalAnim sfml-graphics)
 # target_link_libraries(SkeletalTest sfml-window)
 # target_link_libraries(SkeletalTest sfml-system)

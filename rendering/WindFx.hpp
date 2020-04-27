@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+// --------------------------------------------------------------------------
 class WindFx
     : public sf::Drawable
     , public sf::Transformable

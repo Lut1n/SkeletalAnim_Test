@@ -7,12 +7,20 @@
 #define BONE_COUNT 5
 #define BONE_LENGTH 50.f
 
-struct Animator
+// --------------------------------------------------------------------------
+// Very simple bones animator with constant count and length
+class Animator
 {
+public:
     Animator(int jointCount = BONE_COUNT, float jointLength = BONE_LENGTH);
 
-    void animate(const Vec2& scene_pos, float ellapsed_ms);
+    void animate(float ellapsed);
 
+    void buildSkeleton(int count, float length);
+
+    std::vector<Joint*>& joints();
+
+protected:
     std::vector<Joint*> m_joints;
 };
 

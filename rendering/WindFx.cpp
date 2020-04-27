@@ -2,6 +2,7 @@
 #include "../maths/math_vector.hpp"
 #include "WindFx_Glsl.hpp"
 
+// --------------------------------------------------------------------------
 WindFx::WindFx()
 {
     sf::VertexArray quad(sf::Quads, 4);
@@ -19,15 +20,18 @@ WindFx::WindFx()
     m_background.loadFromFile("./data/background.png");
 }
 
+// --------------------------------------------------------------------------
 WindFx::~WindFx()
 {
 }
 
+// --------------------------------------------------------------------------
 void WindFx::update(float ellapsed_s)
 {
     m_shader.setUniform("u_ellapsed_s",ellapsed_s);
 }
 
+// --------------------------------------------------------------------------
 void WindFx::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.shader = &m_shader;

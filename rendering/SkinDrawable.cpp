@@ -6,10 +6,12 @@
 #define VERTEX_COUNT 10
 #define SKIN_LEN 300
 
+// --------------------------------------------------------------------------
 sf::Shader SkinDrawable::s_shader;
 sf::Texture SkinDrawable::s_texture;
 bool SkinDrawable::s_assetsLoaded = false;
 
+// --------------------------------------------------------------------------
 SkinDrawable::SkinDrawable()
 {
     if(s_assetsLoaded == false)
@@ -36,10 +38,12 @@ SkinDrawable::SkinDrawable()
 
 }
 
+// --------------------------------------------------------------------------
 void SkinDrawable::setJoints(std::vector<Joint*> joints)
 {
     m_joints = joints;
     int boneCount = m_joints.size();
+    m_matrices.resize(boneCount, sf::Transform::Identity);
 
     for(int i=0;i<VERTEX_COUNT;++i)
     {
@@ -50,8 +54,13 @@ void SkinDrawable::setJoints(std::vector<Joint*> joints)
                                         float(c2)*255.0/boneCount,
                                         float(c3)*255.0/boneCount,255.0);
     }
-    
-    m_matrices.resize(50, sf::Transform::Identity);
+}
+
+// --------------------------------------------------------------------------
+void SkinDrawable::setShaderParameters()
+{
+    int boneCount = m_joints.size();
+
     for(int i=0;i<boneCount;++i) {
         m_matrices[i] = m_joints[i]->m_transform * m_joints[i]->m_inverseInitTransform;
     }
@@ -59,13 +68,14 @@ void SkinDrawable::setJoints(std::vector<Joint*> joints)
     s_shader.setUniform("u_jointCount",float(boneCount));
 }
 
+// --------------------------------------------------------------------------
 void SkinDrawable::findClosestJoints(Vec2 vertex, int& i1, int& i2, int& i3)
 {
     std::map<float,int> ordered;
     for(int i=0;i<(int)m_joints.size();++i)
     {
-        Vec2 rel = m_joints[i]->m_initTransform * Vec2(0.0,0.0);
-        float l = len(rel - vertex);
+        Vec2 jointPos = m_joints[i]->head();
+        float l = len(jointPos - vertex);
         ordered[l] = i;
     }
     
@@ -75,6 +85,7 @@ void SkinDrawable::findClosestJoints(Vec2 vertex, int& i1, int& i2, int& i3)
     i3 = it->second;
 }
 
+// --------------------------------------------------------------------------
 void SkinDrawable::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform = getTransform();

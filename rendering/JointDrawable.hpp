@@ -3,6 +3,7 @@
 
 #include "../rigging/Joint.hpp"
 
+// --------------------------------------------------------------------------
 struct JointDrawable
     : public sf::Drawable
     , public sf::Transformable

@@ -5,7 +5,13 @@
 #include <SFML/Graphics.hpp>
 
 // --------------------------------------------------------------------------
-// Alias
+// helpers for angle conversion
+#define Pi 3.1415927410125732421875
+#define Deg2Rad Pi/180
+#define Rad2Deg 180/Pi
+
+// --------------------------------------------------------------------------
+// Alias for sfml vector
 using Vec2 = sf::Vector2f;
 template<typename T>
 using Arr = std::vector<T>;
@@ -22,6 +28,10 @@ float len2( const Vec2& v );
 // --------------------------------------------------------------------------
 // length of a vector
 float len( const Vec2& v );
+
+// --------------------------------------------------------------------------
+// distance between two points
+float distance( const Vec2& p1, const Vec2& p2 );
 
 // --------------------------------------------------------------------------
 // normalize vector2f

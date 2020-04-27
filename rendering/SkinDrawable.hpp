@@ -5,6 +5,7 @@
 #include "../maths/math_vector.hpp"
 #include "../rigging/Joint.hpp"
 
+// --------------------------------------------------------------------------
 class SkinDrawable
     : public sf::Drawable
     , public sf::Transformable
@@ -14,6 +15,8 @@ class SkinDrawable
     SkinDrawable();
     
     void setJoints(std::vector<Joint*> joints);
+
+    void setShaderParameters();
 
     static sf::Shader s_shader;
     static sf::Texture s_texture;

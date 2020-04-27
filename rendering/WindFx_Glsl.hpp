@@ -3,6 +3,7 @@
 
 #define GLSL_CODE(code) #code
 
+// --------------------------------------------------------------------------
 std::string windFx_Glsl = GLSL_CODE(
 
 uniform float u_ellapsed_s;
