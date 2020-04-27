@@ -1,34 +1,47 @@
-#ifndef SKIN_RENDERER_HPP
-#define SKIN_RENDERER_HPP
+#ifndef WEIGHT_RENDERER_HPP
+#define WEIGHT_RENDERER_HPP
 
 #include <SFML/Graphics.hpp>
 #include "../maths/math_vector.hpp"
 #include "../rigging/Joint.hpp"
 
 // --------------------------------------------------------------------------
-class SkinDrawable
+class WeightDrawable
     : public sf::Drawable
     , public sf::Transformable
 {
     public:
 
-    SkinDrawable();
-    
-    void setJoints(std::vector<Joint*> joints);
+    struct Line
+    {
+        Vec2 p1, p2;
+        int jointId;
+        float weight;
+    };
+
+    bool displayGrid = true;
+    bool displayWeight = true;
+
+    WeightDrawable();
+
+    void setup(const sf::VertexArray& vertices, const std::vector<Joint*>& joints);
 
     void setShaderParameters();
 
     static sf::Shader s_shader;
-    static sf::Texture s_texture;
+    static sf::Shader s_shaderWeight;
     static bool s_assetsLoaded;
 
-    sf::VertexArray m_vertices;
     private:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     std::vector<Joint*> m_joints;
     std::vector<sf::Glsl::Mat4> m_matrices;
+    // std::vector<Line> m_lines;
+
+    mutable sf::VertexArray m_edgeShape;
+    mutable sf::VertexArray m_lineShape;
 };
 
-#endif // SKIN_RENDERER_HPP
+#endif // WEIGHT_RENDERER_HPP

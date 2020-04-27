@@ -4,25 +4,27 @@ project(SkeletalAnim_Proj)
 
 set(SRCS
     main.cpp
+    maths/math_vector.cpp
     rendering/JointDrawable.cpp
     rendering/SkinDrawable.cpp
+    rendering/WeightDrawable.cpp
     rendering/WindFx.cpp
     rigging/Animator.cpp
-    rigging/Joint.cpp
     rigging/Graph.cpp
-    maths/math_vector.cpp
+    rigging/Joint.cpp
     )
 
 set(HEADERS
+    maths/math_vector.hpp
     rendering/JointDrawable.hpp
     rendering/SkinDrawable.hpp
-    rendering/WindFx.hpp
-    rigging/Animator.hpp
-    rigging/Joint.hpp
-    rigging/Graph.hpp
-    maths/math_vector.hpp
-    rendering/WindFx_Glsl.hpp
     rendering/vertex_shader.hpp
+    rendering/WeightDrawable.hpp
+    rendering/WindFx.hpp
+    rendering/WindFx_Glsl.hpp
+    rigging/Animator.hpp
+    rigging/Graph.hpp
+    rigging/Joint.hpp
     )
 
 add_definitions("-Wall -Werror -g")

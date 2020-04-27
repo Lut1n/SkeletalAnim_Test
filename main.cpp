@@ -6,6 +6,7 @@
 #include "rigging/Animator.hpp"
 #include "rendering/SkinDrawable.hpp"
 #include "rendering/WindFx.hpp"
+#include "rendering/WeightDrawable.hpp"
 
 // --------------------------------------------------------------------------
 struct AnimatedTree
@@ -18,6 +19,7 @@ struct AnimatedTree
         Display_Weight,
         Display_Skin_Joint,
         Display_Weight_Joint,
+        Display_Skin_Weight,
         Display_All,
 
         Display_ModeCount,
@@ -28,6 +30,7 @@ struct AnimatedTree
     Animator m_animator;    // joint animator
     SkinDrawable m_skin;    // main drawable
     JointDrawable m_joint;  // joint drawable for visual debug
+    WeightDrawable m_weights;
     Vec2 m_position;
 
     AnimatedTree(const Vec2& position, int jointCount = BONE_COUNT, float jointLength = BONE_LENGTH)
@@ -39,6 +42,9 @@ struct AnimatedTree
 
         m_joint.setPosition( position );
         m_joint.setJoints(m_animator.joints());
+
+        m_weights.setPosition( position );
+        m_weights.setup(m_skin.m_vertices, m_animator.joints());
     }
 
     void update(float ellapsed_time)
@@ -50,11 +56,14 @@ struct AnimatedTree
     void draw(sf::RenderTarget& renderTarget)
     {
         m_skin.setShaderParameters();
+        m_weights.setShaderParameters();
 
-        if(s_displayMode == Display_Skin || s_displayMode == Display_Skin_Joint)
+        if(s_displayMode == Display_Skin || s_displayMode == Display_Skin_Joint || s_displayMode == Display_Skin_Weight || s_displayMode == Display_All)
             renderTarget.draw(m_skin);
-        if(s_displayMode == Display_Joint || s_displayMode == Display_Skin_Joint)
+        if(s_displayMode == Display_Joint || s_displayMode == Display_Skin_Joint || s_displayMode == Display_Weight_Joint || s_displayMode == Display_All)
             renderTarget.draw(m_joint);
+        if(s_displayMode == Display_Weight || s_displayMode == Display_Skin_Weight || s_displayMode == Display_Weight_Joint || s_displayMode == Display_All)
+            renderTarget.draw(m_weights);
     }
 };
 
@@ -72,8 +81,8 @@ int main(int argc, char* argv[])
     // scene elements
     WindFx windBackground;
     std::vector<AnimatedTree> trees;
-    trees.push_back( AnimatedTree(Vec2(160.f,360.f), 2, 100.f) );
-    trees.push_back( AnimatedTree(Vec2(320.f,360.f), 4, 70.f) );
+    trees.push_back( AnimatedTree(Vec2(160.f,360.f), 3, 100.f) );
+    trees.push_back( AnimatedTree(Vec2(320.f,360.f), 5, 70.f) );
     trees.push_back( AnimatedTree(Vec2(480.f,360.f),10,25.f) );
 
     sf::Clock clock;
@@ -88,9 +97,9 @@ int main(int argc, char* argv[])
             if(event.type == sf::Event::Closed) window.close();
             if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
             {
-                if(AnimatedTree::s_displayMode == AnimatedTree::Display_Skin)
-                    AnimatedTree::s_displayMode = AnimatedTree::Display_Joint;
-                else
+                int dm = AnimatedTree::s_displayMode;
+                AnimatedTree::s_displayMode = static_cast<AnimatedTree::DisplayMode>(dm+1);
+                if(AnimatedTree::s_displayMode >= AnimatedTree::Display_ModeCount)
                     AnimatedTree::s_displayMode = AnimatedTree::Display_Skin;
             }
         }

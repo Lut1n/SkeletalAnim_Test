@@ -47,12 +47,46 @@ void SkinDrawable::setJoints(std::vector<Joint*> joints)
 
     for(int i=0;i<VERTEX_COUNT;++i)
     {
-        int c1,c2,c3;
-        // float w1,w2;
-        findClosestJoints(m_vertices[i].position,c1,c2,c3);
-        m_vertices[i].color = sf::Color(float(c1)*255.0/boneCount,
-                                        float(c2)*255.0/boneCount,
-                                        float(c3)*255.0/boneCount,255.0);
+        const int N = 2;
+
+        std::map<float,int> cj = Joint::findClosest(m_vertices[i].position, m_joints);
+        float weights[N] = {0,0};
+        int indexes[N] = {0,0};
+
+        // compute weights
+        if(cj.size() == 1)
+        {
+            weights[0] = 1.0;
+            indexes[0] = cj.begin()->second;
+        }
+        else
+        {
+            float dtt = 0.0;
+            auto it = cj.begin();
+            for(int k=0;k<N;++k)
+            {
+                if(it == cj.end()) break;
+                dtt += it->first;
+                ++it;
+            }
+            it = cj.begin();
+            for(int k=0;k<N;++k)
+            {
+                if(it == cj.end()) break;
+                weights[k] = 1.0 - it->first / dtt;
+                indexes[k] = it->second;
+                ++it;
+            }
+        }
+
+        // update color with 2 indexes and 2 weights
+        sf::Color c;
+        c.r = indexes[0]*255.0/boneCount;
+        c.g = indexes[1]*255.0/boneCount;
+        c.b = weights[0]*255;
+        c.a = weights[1]*255;
+        m_vertices[i].color = c;
+
     }
 }
 
@@ -66,23 +100,6 @@ void SkinDrawable::setShaderParameters()
     }
     s_shader.setUniformArray("u_jointTransforms", m_matrices.data(), m_matrices.size());
     s_shader.setUniform("u_jointCount",float(boneCount));
-}
-
-// --------------------------------------------------------------------------
-void SkinDrawable::findClosestJoints(Vec2 vertex, int& i1, int& i2, int& i3)
-{
-    std::map<float,int> ordered;
-    for(int i=0;i<(int)m_joints.size();++i)
-    {
-        Vec2 jointPos = m_joints[i]->head();
-        float l = len(jointPos - vertex);
-        ordered[l] = i;
-    }
-    
-    auto it = ordered.begin();
-    i1 = it->second; it++;
-    i2 = it->second; it++;
-    i3 = it->second;
 }
 
 // --------------------------------------------------------------------------

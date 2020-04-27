@@ -30,6 +30,9 @@ struct Joint : public GraphNode
     Vec2 head();
 
     float distanceFrom(const Vec2& pt);
+    Vec2 closestPoint(const Vec2& pt);
+
+    static std::map<float,int> findClosest(Vec2 vertex, const std::vector<Joint*>& joints);
 };
 
 #endif // JOINT_HPP
