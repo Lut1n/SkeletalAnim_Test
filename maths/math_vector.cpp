@@ -38,6 +38,26 @@ float crossZ(const Vec2& v1, const Vec2& v2)
 }
 
 // --------------------------------------------------------------------------
+Vec2 cart2polar(const Vec2& cart)
+{
+    float m = len(cart);
+    float a;
+
+    if(cart.x == 0.0) a = sign(cart.y) * Pi/2;
+    else a = atan2f(cart.y, cart.x);
+
+    return Vec2(m,a);
+}
+
+// --------------------------------------------------------------------------
+Vec2 polar2cart(const Vec2& polar)
+{
+    float x = std::cos(polar.y) * polar.x;
+    float y = std::sin(polar.y) * polar.x;
+    return Vec2(x,y);
+}
+
+// --------------------------------------------------------------------------
 float sign(float f)
 {
     return f>0.0?1.0:(f<0.0?-1.0:0.0);

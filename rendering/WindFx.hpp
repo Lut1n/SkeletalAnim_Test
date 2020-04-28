@@ -8,20 +8,20 @@ class WindFx
     : public sf::Drawable
     , public sf::Transformable
 {
-    public:
-
+public:
     WindFx();
     virtual ~WindFx();
     
-    void update(float ellapsed_s);
+    // Update wind fx animation with elapsed time
+    void update(float elapsed_s);
 
-    private:
+protected:
+    // sfml draw override
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
-    mutable sf::VertexArray m_rectShape;
-    sf::Shader m_shader;
-    sf::Texture m_background;
+    sf::VertexArray m_rectShape;    // background shape
+    sf::Shader m_shader;            // shader for background
+    sf::Texture m_background;       // background texture
 };
 
 #endif // WIND_RENDERER_HPP

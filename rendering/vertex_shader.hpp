@@ -4,7 +4,8 @@
 #define GLSL_CODE(code) #code
 
 // --------------------------------------------------------------------------
-static const std::string vertCode = GLSL_CODE(
+// vertex shader used by SkinDrawable in skeletal animation
+static const std::string s_riggingVertCode_skin = GLSL_CODE(
 
 const int MAX_BONES = 50;
 uniform mat4 u_jointTransforms[MAX_BONES];
@@ -23,11 +24,9 @@ void main()
 
     // apply weighted transforms on vertex
     vec4 output_vertex = vec4(0.0,0.0,0.0,1.0);
-    // float weight = 0.7;
     for(int i=0;i<2;++i)
     {
         output_vertex.xyz += (u_jointTransforms[indexes[i]] * gl_Vertex).xyz * weights[i];
-        // weight = 0.3;
     }
 
     // transform the vertex position
@@ -45,7 +44,8 @@ void main()
 
 
 // --------------------------------------------------------------------------
-static const std::string vertCode_weights = GLSL_CODE(
+// vertex shader used by WeightDrawable in skeletal animation
+static const std::string s_riggingVert_weights = GLSL_CODE(
 
 const int MAX_BONES = 50;
 uniform mat4 u_jointTransforms[MAX_BONES];
@@ -66,11 +66,9 @@ void main()
 
     // apply weighted transforms on vertex
     vec4 output_vertex = vec4(0.0,0.0,0.0,1.0);
-    // float weight = 0.7;
     for(int i=0;i<2;++i)
     {
         output_vertex.xyz += (u_jointTransforms[indexes[i]] * gl_Vertex).xyz * weights[i];
-        // weight = 0.3;
     }
 
     // transform the vertex position

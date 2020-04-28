@@ -28,13 +28,15 @@ void JointDrawable::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 {
     for(auto& joint:m_joints)
     {
-        Vec2 curr_point = joint->m_pose * Vec2(0.f,0.f);
-        
-        m_vertices[1].position = sf::Vector2f(0.f, -len(curr_point));
-        sf::Transform rot; rot.rotate( std::atan2( curr_point.x,-curr_point.y ) * Rad2Deg );
+        Vec2 jointVec = joint->getPoseVec();
+        Vec2 polar = cart2polar(jointVec);
+
+        m_vertices[1].position = Vec2(0,-polar.x);
+        sf::Transform rot; rot.rotate(polar.y * Rad2Deg + 90.0);
         
         sf::Transform parent_tfrm;
-        if(joint->parent()) parent_tfrm = dynamic_cast<Joint*>(joint->parent())->m_transform;
+        Joint* parent = joint->parentJoint();
+        if(parent) parent_tfrm = parent->root2Joint();
 
         states.transform = getTransform() * parent_tfrm * rot;
         target.draw(m_vertices, states);

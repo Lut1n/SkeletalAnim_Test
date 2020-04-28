@@ -54,6 +54,14 @@ bool above(Vec2 v, Vec2 a, Vec2 b);
 float crossZ(const Vec2& v1, const Vec2& v2);
 
 // --------------------------------------------------------------------------
+// convert cartesian coordinates into polar coordinates
+Vec2 cart2polar(const Vec2& cart);
+
+// --------------------------------------------------------------------------
+// convert polar coordinates into cartesian coordinates
+Vec2 polar2cart(const Vec2& polar);
+
+// --------------------------------------------------------------------------
 // sign of a float
 float sign(float f);
 

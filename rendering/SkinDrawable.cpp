@@ -18,7 +18,7 @@ SkinDrawable::SkinDrawable()
     {
         s_texture.loadFromFile("./data/tree.png");
         s_texture.setSmooth(true);
-        s_shader.loadFromMemory(vertCode, sf::Shader::Vertex);
+        s_shader.loadFromMemory(s_riggingVertCode_skin, sf::Shader::Vertex);
         s_assetsLoaded = true;
     }
     
@@ -96,10 +96,16 @@ void SkinDrawable::setShaderParameters()
     int boneCount = m_joints.size();
 
     for(int i=0;i<boneCount;++i) {
-        m_matrices[i] = m_joints[i]->m_transform * m_joints[i]->m_inverseInitTransform;
+        m_matrices[i] = m_joints[i]->animTransform();
     }
     s_shader.setUniformArray("u_jointTransforms", m_matrices.data(), m_matrices.size());
     s_shader.setUniform("u_jointCount",float(boneCount));
+}
+
+// --------------------------------------------------------------------------
+const sf::VertexArray& SkinDrawable::getVertices() const
+{
+    return m_vertices;
 }
 
 // --------------------------------------------------------------------------

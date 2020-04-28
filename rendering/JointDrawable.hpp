@@ -4,18 +4,22 @@
 #include "../rigging/Joint.hpp"
 
 // --------------------------------------------------------------------------
-struct JointDrawable
+class JointDrawable
     : public sf::Drawable
     , public sf::Transformable
 {
+public:
     JointDrawable();
     
+    // set joints to draw
     void setJoints(std::vector<Joint*>& joints);
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+protected:
+    // sfml draw override
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    mutable sf::VertexArray m_vertices;
-    std::vector<Joint*> m_joints;
+    std::vector<Joint*> m_joints;       // joint list
+    mutable sf::VertexArray m_vertices; // vertices array used for drawing
 };
 
 #endif // JOINT_RENDERER_H

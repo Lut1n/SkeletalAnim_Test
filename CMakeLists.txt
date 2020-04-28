@@ -41,5 +41,3 @@ set(SFML_DIR "C:/SFML-2.5.1/lib/cmake/SFML")
 find_package(SFML 2.4 COMPONENTS graphics REQUIRED)
 
 target_link_libraries(SkeletalAnim sfml-graphics)
-# target_link_libraries(SkeletalTest sfml-window)
-# target_link_libraries(SkeletalTest sfml-system)

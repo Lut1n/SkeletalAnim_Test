@@ -16,7 +16,7 @@ WindFx::WindFx()
     quad[3].texCoords = Vec2(0.f,1.f);
     m_rectShape = quad;
     
-    m_shader.loadFromMemory(windFx_Glsl, sf::Shader::Fragment);
+    m_shader.loadFromMemory(s_windFx_Glsl, sf::Shader::Fragment);
     m_background.loadFromFile("./data/background.png");
 }
 
@@ -26,9 +26,9 @@ WindFx::~WindFx()
 }
 
 // --------------------------------------------------------------------------
-void WindFx::update(float ellapsed_s)
+void WindFx::update(float elapsed_s)
 {
-    m_shader.setUniform("u_ellapsed_s",ellapsed_s);
+    m_shader.setUniform("u_elapsed_s",elapsed_s);
 }
 
 // --------------------------------------------------------------------------

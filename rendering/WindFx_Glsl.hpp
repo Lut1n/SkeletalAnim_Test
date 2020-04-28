@@ -4,9 +4,10 @@
 #define GLSL_CODE(code) #code
 
 // --------------------------------------------------------------------------
-std::string windFx_Glsl = GLSL_CODE(
+// Fragment shader used by WindFX - add random flow effects on background
+static const std::string s_windFx_Glsl = GLSL_CODE(
 
-uniform float u_ellapsed_s;
+uniform float u_elapsed_s;
 uniform sampler2D texture;
 
 // basic simple hash
@@ -56,16 +57,16 @@ float fracNoise(vec2 uv, int octave, float persist)
     return r/total;
 }
 
-float computeWindAt(vec2 uv, float ellapsed, float force)
+float computeWindAt(vec2 uv, float elapsed, float force)
 {
-    vec2 f = vec2(ellapsed * 0.5, sin(ellapsed * 0.1) );
+    vec2 f = vec2(elapsed * 0.5, sin(elapsed * 0.1) );
     return fracNoise(vec3(uv + f*force,0.0), 8, 0.7);
 }
 
 void main()
 {
     vec2 tx = gl_TexCoord[0].xy * vec2(640.0,360.0);
-    vec2 flow = vec2(computeWindAt(tx, u_ellapsed_s, 1.0));
+    vec2 flow = vec2(computeWindAt(tx, u_elapsed_s, 1.0));
     vec2 uv = tx+flow*0.1;
     gl_FragColor = texture2D(texture, uv);
 }

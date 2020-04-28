@@ -14,14 +14,17 @@ class Animator
 public:
     Animator(int jointCount = BONE_COUNT, float jointLength = BONE_LENGTH);
 
-    void animate(float ellapsed);
-
+    // Build a backbone (graph of bones reduced to a simple linked list)
     void buildSkeleton(int count, float length);
+
+    // Update all bone's transforms
+    void animate(float elapsed);
 
     std::vector<Joint*>& joints();
 
 protected:
     std::vector<Joint*> m_joints;
+    float m_boneLength;
 };
 
 #endif // ANIMATOR_H
